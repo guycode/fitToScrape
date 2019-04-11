@@ -1,0 +1,27 @@
+/*Sticky Footer*/
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+
+  /*Add Background Texture*/
+    background-image: url('../images/vintage_newspapers.jpg');
+}
+
+main {
+  flex: 1 0 auto;
+}
+.message {
+	width: 100%;
+	border-radius: 5px;
+	box-shadow: 0 0 10px #aaa;
+	margin: auto;
+	text-align: center;
+	padding: 40px 90px;
+	color: #aaa;
+	background-color: #fff;
+}
+
+.instructions {
+	margin-left: 25px;
+}

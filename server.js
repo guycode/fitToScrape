@@ -1,40 +1,37 @@
-const mongoose = require("mongoose");
-const request = require("request");
-const cheerio = require("cheerio"); 
+// =============================================================
+// Node Dependencies
+var express = require('express');
+var exphbs = require('express-handlebars');
+var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
 
-// Require all models
-const db = require("./models");
+var logger = require('morgan'); // for debugging
+var request = require('request'); // for web-scraping
+var cheerio = require('cheerio'); // for web-scraping
 
-// Port configuration for local/Heroku
-const PORT = process.env.PORT || process.argv[2] || 8080;
+// Initialize Express for debugging and body parsing
+var app = express();
+app.use(logger('dev'));
+app.use(bodyParser.urlencoded({
+  extended: false
+}))
 
-// Initialize Express
-const app = express();
+// Serve Static Content
+app.use(express.static(process.cwd() + '/public'));
 
-// Require all models
-const db = require("./models");
+// Express-Handlebars
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
 
-// Initialize Express
-const app = express();
+// Tell server to use the middleware router.js in the "routes" directory to handle all requests
+var router = require('./routes');
+app.use('/', router);
 
-const exphbs = require("express-handlebars");
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
-app.set("view engine", "handlebars");
+// Now, start the server
+// Listen either on the port Heroku gives us, or on 8080 if we are running on localhost. 
+var PORT = process.env.PORT || 8080;
 
-// Use express.static to serve the public folder as a static directory
-app.use(express.static("public"));
-// Controllers
-const router = require("./controllers/api.js");
-app.use(router);
-// Connect to the Mongo DB
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/fitToScrape";
-
-// Set mongoose to leverage built in JavaScript ES6 Promises
-// Connect to the Mongo DB
-mongoose.Promise = Promise;
-mongoose.connect(MONGODB_URI);
-
-// Start the server
-app.listen(PORT, function () {
-    console.log(`This application is running on port: ${PORT}`);
+// Start our app's listening on either port 8080 or the port that heroku gave us
+app.listen(PORT, function() {
+     console.log("Mongoose news scraper alive and listening on Port "+ PORT);
 });

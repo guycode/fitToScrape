@@ -59,3 +59,8 @@ typings/
 
 # next.js build output
 .next
+
+node_modules
+MySQLHerokuDeploymentProcess.pdf
+JawsDB_Settings.pdf 
+.DS_Store
