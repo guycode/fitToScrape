@@ -5,14 +5,13 @@ var exphbs = require('express-handlebars');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
-var logger = require('morgan'); // for debugging
 var request = require('request'); // for web-scraping
 var cheerio = require('cheerio'); // for web-scraping
 
 // Initialize Express for debugging and body parsing
 var app = express();
-app.use(logger('dev'));
-app.use(bodyParser.urlencoded({
+/* app.use(logger('dev'));
+ */app.use(bodyParser.urlencoded({
   extended: false
 }))
 
@@ -26,12 +25,12 @@ app.set('view engine', 'handlebars');
 // Tell server to use the middleware router.js in the "routes" directory to handle all requests
 var router = require('./routes');
 app.use('/', router);
-
+mongoose.set('useCreateIndex', true);
 // Now, start the server
 // Listen either on the port Heroku gives us, or on 8080 if we are running on localhost. 
-var PORT = process.env.PORT || 8080;
+var PORT = process.env.PORT || 3000;
 
 // Start our app's listening on either port 8080 or the port that heroku gave us
 app.listen(PORT, function() {
-     console.log("Mongoose news scraper alive and listening on Port "+ PORT);
+     console.log("Mongoose nhl scraper alive and listening on Port "+ PORT);
 });

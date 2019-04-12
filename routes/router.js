@@ -19,7 +19,7 @@ var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/fitToScrape";
 // Set mongoose to leverage built in JavaScript ES6 Promises
 // Connect to the Mongo DB
 mongoose.Promise = Promise;
-mongoose.connect(MONGODB_URI);
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 const db = mongoose.connection;
 
@@ -57,8 +57,8 @@ router.get("/scrape", function(req, res) {
 
     const $ = cheerio.load(html);
     let titlesArray = [];
-    //  Process one story
-    $("div.story-body").each(function(i, element) {
+
+    $("body").each(function(i, element) {
       let result = {};
       result.link = $(element).find("a").attr("href");
       result.title = $(element).find("h2.headline").text().trim();
